@@ -117,6 +117,16 @@ class SpeechModel():
                 total_true = total_true + 1
         return total_true/total
     
+    def test_from_audio(self, path):
+        d, sr = sf.read(path, dtype='float32')
+        d = d.T
+        d = librosa.resample(d, sr, 22050)
+        feature = librosa.feature.mfcc(d, n_fft = int(sr*self.data_loader.window_size), hop_length=int(sr*self.data_loader.overlap), 
+                                       n_mfcc=self.data_loader.n_mfcc).T
+        for key, model in self.models.items():
+            print(key + "\t:" + str(model.score(feature)))
+        return self.get_class(feature)
+    
 def initByBakis(inumstates, ibakisLevel):
     startprobPrior = np.zeros(inumstates)
     startprobPrior[0: ibakisLevel - 1] = 1/float((ibakisLevel - 1))
@@ -135,8 +145,8 @@ def getTransmatPrior(inumstates):
 
 if __name__ == '__main__':
     data_loader = DataLoader(path='tiengviet', n_mfcc=13, window_size=0.015,
-                             overlap=0.005, test_size = 0.1, shuffle=True)
+                             overlap=0.005, test_size = 0.1, stupid_mode=False, shuffle=True)
     data_loader.load_data()
-    model = SpeechModel(data_loader, n_com=3, n_mix=3)
+    model = SpeechModel(data_loader, n_com=9, n_mix=3)
     model.fit()
     print("Accuracy: " + str(model.cal_accuracy()))
