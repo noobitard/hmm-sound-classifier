@@ -1,3 +1,4 @@
+ #!/usr/bin/env python -W ignore::DeprecationWarning
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 import numpy as np
@@ -144,9 +145,9 @@ def getTransmatPrior(inumstates):
     return transmat
 
 if __name__ == '__main__':
-    data_loader = DataLoader(path='tiengviet', n_mfcc=13, window_size=0.015,
-                             overlap=0.005, test_size = 0.1, stupid_mode=False, shuffle=True)
+    data_loader = DataLoader(path='tiengviet', n_mfcc=6, window_size=0.015,
+                             overlap=0.005, test_size = 0.2, shuffle=True)
     data_loader.load_data()
-    model = SpeechModel(data_loader, n_com=9, n_mix=3)
+    model = SpeechModel(data_loader, n_com=3, n_mix=5)
     model.fit()
     print("Accuracy: " + str(model.cal_accuracy()))

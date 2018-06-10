@@ -1,8 +1,3 @@
-"""
-DIT CON ME CHUNG MAY
-DIT CA LO NHA CHUNG MAY
-BU CU TAO
-"""
 import numpy as np
 from scipy.stats import multivariate_normal
 def mixture_pdf(X, c, means, covs, component=None):
@@ -107,7 +102,6 @@ class GMMHMM:
         if self.mu is None:
             self.mu = np.zeros((self.n_states, self.n_mix, self.n_features))
             for state in self.n_states:
-                # NOTE THAT THE FUCKING SIZE OF MIXTURES MUST LESS OR FUCKING EQUAL TIME
                 rand_idxs = np.random.choice(T, size = self.n_mix, replace = False)
                 self.mu[state, :, :] = obs[0, :, rand_idxs]
         if self.covs is None:
@@ -120,7 +114,7 @@ class GMMHMM:
     
     def fit(self, obs):
         '''
-        # Fucking fit 
+        # fit 
         # @params:
         # obs: observation in 3d (n_observations, n_features, time)
         '''
